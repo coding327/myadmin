@@ -3,7 +3,7 @@
         <div class="left-title">
             <el-input placeholder="请输入用户名" v-model="search" clearable>
             </el-input>
-            <el-button type="primary">搜索</el-button>
+            <el-button @click="searchFun" type="primary">搜索</el-button>
         </div>
         <div>
             <el-button type="primary">批量删除</el-button>
@@ -20,7 +20,11 @@ export default {
         }
     },
     components: {},
-    methods: {},
+    methods: {
+        searchFun() {
+            this.$emit('searchFunParent', this.search)
+        }
+    },
 }
 </script>
 

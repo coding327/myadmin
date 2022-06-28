@@ -1,30 +1,27 @@
 <template>
     <el-table
         ref="multipleTable"
-        :data="tableData"
+        :data="arr"
         style="width: 100%"
         @selection-change="handleSelectionChange"
     >
-        <el-table-column type="selection" width="55"></el-table-column>
+        <el-table-column type="selection" width="60"></el-table-column>
         <!-- label表头，prop指定的字段 -->
         <el-table-column
             prop="username"
             label="用户姓名"
-            width="100"
+            width="120"
         ></el-table-column>
         <!-- 去掉宽度能够自适应 -->
-        <el-table-column
-            prop="address"
-            label="籍贯"
-        ></el-table-column>
-        <el-table-column label="投资时间" width="160">
+        <el-table-column prop="address" label="籍贯"></el-table-column>
+        <el-table-column label="投资时间" width="180">
             <!-- slot-scope作用域插槽，template空标签，scope就当成变量即可，scope.row就是当前行数据 -->
             <template slot-scope="scope"
                 ><i class="el-icon-time" style="margin-right: 5px"></i
                 >{{ scope.row.createTime }}</template
             >
         </el-table-column>
-        <el-table-column label="类型" width="80">
+        <el-table-column label="类型" width="100">
             <!-- 类型处理使用映射对象 -->
             <template slot-scope="scope">{{
                 typeObj[scope.row.type]
@@ -70,6 +67,7 @@
 
 <script type="text/javascript">
 export default {
+    props: ["arr"],
     data() {
         return {
             typeObj: {
@@ -78,21 +76,20 @@ export default {
                 1: "优惠卷",
                 2: "购买一定盈",
             },
-            tableData: [
-                {
-                    username: "王小虎",
-                    address: "上海市普陀区金沙江路",
-                    createTime: "2022-6-24 10:10:10",
-                    type: 0, //0充值 1优惠卷 2购买一定盈
-                    income: 1000,
-                    pay: 100,
-                    money: 900,
-                },
-            ],
+            // tableData: [
+            //     {
+            //         username: "王小虎",
+            //         address: "上海市普陀区金沙江路",
+            //         createTime: "2022-6-24 10:10:10",
+            //         type: 0, //0充值 1优惠卷 2购买一定盈
+            //         income: 1000,
+            //         pay: 100,
+            //         money: 900,
+            //     },
+            // ],
             multipleSelection: [], // 就是我们checkbox双向数据绑定选中值放到这个数组中
         }
     },
-
     methods: {
         handleSelectionChange(val) {
             this.multipleSelection = val

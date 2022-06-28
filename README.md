@@ -320,20 +320,124 @@ html,body,#app{
 
 > 分页组件
 
-直接复制过来，对齐进行位置处理外面套个div，使用flex布局
+直接复制过来，对齐进行位置处理外面套个div，使用flex布局，静态页面内容基本完成
 
+> 写功能：
+> 写功能之前，涉及到发送数据，请求接口，后端模拟数据
+==以往是使用ajax发送请求，但是vue里面为我们提供了axios，axios就是利用promise对ajax进行了再次封装==
 
+> 使用axios,安装一下axios
+1. 在工具类`utils目录`里面我们可以对axios进行再次封装，为了得到一个全局请求工具类，每个请求接口调用这个请求，配置get还是post以及传参
+   1. 可以把bus通信也一起配置了【注意都需要单独创建文件】
+   2. 开发中把Axios进行二次封装，可以更好的使用Axios的请求拦截器，以及响应拦截器去处理数据
+   3. baseURL，主要放域名【一般后端接口都有相同域名，hash值不同】，由于没有真实后端接口地址，这里可以随便写，或者写空字符串就行了，最终它会和请求接口里配置得url拼接，而mock接口名采用正则，比如包含/home
 
+2. 所有`请求接口`都进行统一管理，在api目录创建一个homeApi.js文件【这个文件用来处理home页面所有的请求】
+   1. 将我们的请求工具类引入
+   2. 页面加载完得向后端请求数据，然后渲染，伪造数据和后端接口【使用mock进行模拟后端接口】
+   3. 安装mockjs
+      + npm i -S mockjs
+      + 在mock目录下创建一个index.js文件用来放后端提供`数据接口`，先引入一下Mock,然后把它注入到main.js
+      + 在mock目录下创建一个homeData.js文件伪造home页面的数据,这时我们需要用到一个工具类，地址栏参数解析【参数转对象，提取url参数】
+      + 在utils目录下新建一个urlUtils.js文件,这个直接使用即可
+      + 回到homeData.js文件直接引入提取参数工具类,伪造100条数据，利用for循环往List添加数据，并使用Mock生成【List是我们用来存放伪造数据】
+      + 可以把之前表格静态数据拿过来，添加一个id,并把值全部替换为Mock来生成，每遍历一次都会生成一条数据
+> `/mock/homeData.js`文件暴露该对象,让index.js接收该对象
+```
+export default {
+    getHomeData: config => {
+        console.log(config)
+        return {
+            code: 200,
+            msg: '请求成功',
+            res: List
+        }
+    }
+}
+```
+> `/mock/index.js`文件
+```
+// index.js主要提供数据接口,最终注入到main.js，某个页面数据增删改查需要创建js文件，进行操作然后暴露,暴露对象
+import Mock from 'mockjs'
+// 引入homeData对象
+import homeData from './homeData'
 
+// 写数据接口，与请求接口对应
+// 参数1：接口的正则表达式
+// 参数2：请求类型 get post put delete
+// 参数3：返回给前端的数据
+Mock.mock(/\/home/, 'get', homeData.getHomeData)
+```
 
+3. 回到home组件，请求数据统一放到父组件中，方便后续操作，不需要每个子组件都去请求数据
+   1. 父传子采用props，elementUI里表格有个tableData我们只需要父组件传值过去，替换一下就可以了
+   2. 引入请求接口，来帮我们请求数据
+   3. 在父组件mounted里请求数据，不要直接调用请求接口，进行封装，方便刷新操作能接着调用，请求数据不会只用一次一定要封装
+   4. 请求成功会得到一个后端返回给我们的res对象，该对象包含了状态码、请求信息、数据【一般都是数组】
 
+> 正确的接口调用方式如下：
+```
+    mounted() {
+        this.initGetHome()
+    },
+    methods: {
+        initGetHome() {
+            getHomeApi().then((res) => {
+                console.log("res", res)
+                if (res.code == 200) {
+                    this.arr = res.data
+                }
+            })
+        },
+    },
+```
 
+4. MySearch组件里面的搜索功能,这个搜索功能可以放到初始请求数据里面，把keyword传进去，后端接收对数组过滤即可
+   1. 子传父，这里我们采用this.$emit(事件类型，关键词),父组件里用个keyword接收即可【工具类有键名，无键值默认为空串，不搜索，初次进入页面，始终都是有keyword的键名】
+   2. 后端进行处理，回到`/mock/homeData.js`，对于关键字进行过滤，返回给前端
 
-
-
-
-
-
+> `/home/Home.vue`
+```
+    methods: {
+        searchFunParent(val) {
+            this.keyword = val
+            this.initGetHome()
+        },
+        // 请求接口调用进行封装
+        // initGetHome() {
+        //     getHomeApi().then((res) => {
+        //         // console.log("res", res)
+        //         if (res.code == 200) {
+        //             this.arr = res.data
+        //         }
+        //     })
+        // },
+        // 引入关键词，对于请求接口调用进行升级[注意参数是对象]
+        initGetHome() {
+            getHomeApi({ keyword: this.keyword }).then((res) => {
+                // console.log("res", res)
+                if (res.code == 200) {
+                    this.arr = res.data
+                }
+            })
+        },
+    },
+```
+> `/mock/homeData.js`
+```
+    getHomeData: config => {
+        // console.log(config) config是个对象里面有url，这个url刚好携带了get方式的参数【正好利用上参数解析该工具类】，同时里面还有请求方式
+        // console.log(config.url)
+        var { keyword } = param2Obj(config.url) // 参数解析
+        // console.log(1, keyword)
+        var res = List.filter(item => item.username.indexOf(keyword) != -1)
+        return {
+            code: 200,
+            msg: '请求成功！',
+            data: res
+        }
+    }
+```
 
 
 
