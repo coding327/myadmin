@@ -6,13 +6,14 @@
             <el-button @click="searchFun" type="primary">搜索</el-button>
         </div>
         <div>
-            <el-button type="primary">批量删除</el-button>
-            <el-button type="primary">添加</el-button>
+            <el-button type="primary" @click="batchDelete">批量删除</el-button>
+            <el-button type="primary" @click="dialogShow">添加</el-button>
         </div>
     </div>
 </template>
 
 <script type="text/javascript">
+import eventBus from '../../../utils/eventBus'
 export default {
     data() {
         return {
@@ -23,6 +24,12 @@ export default {
     methods: {
         searchFun() {
             this.$emit('searchFunParent', this.search)
+        },
+        batchDelete() {
+            eventBus.$emit('batchDelete')
+        },
+        dialogShow() {
+            eventBus.$emit('dialogShowA')
         }
     },
 }

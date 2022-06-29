@@ -7,9 +7,11 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 // 注入数据接口
 import './mock/index'
+import MyPage from './components/MyPage.vue'
+Vue.config.productionTip = false
 
 Vue.use(ElementUI, { size: 'mini' })
-Vue.config.productionTip = false
+Vue.component('MyPage', MyPage)
 
 new Vue({
   router,

@@ -10,4 +10,20 @@ export function getHomeApi(params) {
     })
 }
 
+// 2.home单个删除请求接口
+export function deleteHomeApi(data) {
+    return request({
+        url: '/deleteById',
+        method: 'post', // post方式配置项传参属性是data
+        data
+    })
+}
 
+// 3.home批量删除请求接口
+export function batchDeleteApi(data) {
+    return request({
+        url: '/batchDel',
+        method: 'post',
+        data
+    })
+}

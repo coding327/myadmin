@@ -10,13 +10,12 @@ Vue.use(VueRouter) // Vue上注册使用
 const routes = [
     {
         path: '/',
-        redirect: '/layout'
+        redirect: '/layout/home', // 填完整路径【一般是首页，重定向】
     },
     {
         path: '/layout',
         name: 'layout',
         component: Layout,
-        redirect: '/layout/home', // 填完整路径【一般是首页，重定向】
         children: [
             {
                 path: 'home', // 不要带/
