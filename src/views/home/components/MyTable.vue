@@ -51,7 +51,7 @@
                 <el-button
                     size="mini"
                     type="warning"
-                    @click="handleEdit(scope.$index, scope.row)"
+                    @click="handleEdit(scope.row)"
                     >编辑</el-button
                 >
                 <el-button
@@ -115,9 +115,13 @@ export default {
                 if (res.code == 200) {
                     // console.log(res.msg) // 成功
                     // 通知父组件数据刷新
-                    this.$emit('batchDel')
+                    this.$emit("batchDel")
                 }
             })
+        },
+        handleEdit(val) {
+            console.log(val);
+            this.$emit('editData', val)
         },
     },
 }

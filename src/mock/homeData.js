@@ -30,6 +30,7 @@ for (var i = 0; i < 100; i++) {
     })
 }
 
+// 暴露对象，每个对象对应一个方法
 export default {
     // getHomeData: config => {
     //     // console.log(config) config是个对象里面有url，这个url刚好携带了get方式的参数【正好利用上参数解析该工具类】，同时里面还有请求方式
@@ -86,6 +87,42 @@ export default {
             code: 200,
             msg: '批量删除成功',
             data: null // 数据List被res重新赋值，前端重新发请求获取数据
+        }
+    },
+    addHomeData: config => {
+        var { username, address, type, income, pay, money } = JSON.parse(config.body)
+        List.unshift({
+            id: Mock.mock('@guid()'),
+            createTime: Mock.mock('@datetime()'),
+            username,
+            address,
+            type,
+            income,
+            pay,
+            money
+        })
+        return {
+            code: 200,
+            msg: '添加成功',
+            data: null
+        }
+    },
+    editHomeData: config => {
+        const { id, username, address, type, income, pay, money } = JSON.parse(config.body)
+        List.forEach(item => {
+            if (item.id == id) {
+                item.username = username
+                item.address = address
+                item.type = type
+                item.income = income
+                item.pay = pay
+                item.money = money
+            }
+        })
+        return {
+            code: 200,
+            msg: '修改成功',
+            data: null
         }
     }
 }

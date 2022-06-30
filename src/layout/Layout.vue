@@ -1,13 +1,16 @@
 <template>
     <el-container>
-        <el-header>Header</el-header>
+        <el-header>
+            <Header />
+        </el-header>
         <el-container>
-            <el-aside width="200px">
-                <router-link to="home">Home</router-link>
-                <router-link to="user">User</router-link>
+            <el-aside>
+                <Aside />
             </el-aside>
             <el-container>
-                <el-main>
+                <!-- 面包屑 -->
+                <Bread />
+                <el-main id="xtable">
                     <router-view></router-view>
                 </el-main>
                 <el-footer>Footer</el-footer>
@@ -17,17 +20,25 @@
 </template>
 
 <script type="text/javascript">
+import Header from "./Header.vue"
+import Aside from "./Aside.vue"
+import Bread from "./Bread.vue"
 export default {
     data() {
         return {}
     },
-    components: {},
+    components: {
+        Header,
+        Aside,
+        Bread
+    },
     methods: {},
 }
 </script>
 
 <style lang="less" scoped>
 .el-container {
+    overflow: hidden; // 侧边栏超出
     height: 100%;
 }
 .el-header,

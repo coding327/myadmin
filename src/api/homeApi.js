@@ -27,3 +27,21 @@ export function batchDeleteApi(data) {
         data
     })
 }
+
+// 4.表单添加请求发送接口
+export function addFunApi(data) {
+    return request({
+        url: '/addHome',
+        method: 'post',
+        data
+    })
+}
+
+// 5.修改表格数据更新请求接口
+export function editFunApi(data) {
+    return request({
+        url: '/editHome',
+        method: 'post',
+        data
+    })
+}

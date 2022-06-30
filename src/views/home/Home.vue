@@ -1,9 +1,9 @@
 <template>
     <div>
         <!-- 组件1 MySearch占位 -->
-        <MySearch @searchFunParent="searchFunParent"/>
+        <MySearch @addShow="addShow" @searchFunParent="searchFunParent"/>
         <!-- 组件2 MyTable占位 -->
-        <MyTable :arr="arr" @delParent="initGetHome" @batchDel="initGetHome" />
+        <MyTable :arr="arr" @editData="editData" @delParent="initGetHome" @batchDel="initGetHome" />
         <!-- 组件3 MyPage占位 -->
         <MyPage
             :page="page"
@@ -14,7 +14,7 @@
             @changePage="changePage"
         />
         <!-- 组件4 MyDialog占位 -->
-        <MyDialog/>
+        <MyDialog :btnType="btnType" :row="row" @cancelForm="cancelForm" v-if="show" @resetTable="resetTable"/>
     </div>
 </template>
 
@@ -33,7 +33,9 @@ export default {
             pageSize: 20, // 每一页显示多少条数据
             total: 0, // 数据总条数
             pageSizes: [20, 40, 60, 80, 100], // 和pageSize成套使用
-            show: false // 控制弹框显示
+            show: false, // 控制弹框显示
+            row: {}, // 保存当前编辑行数据
+            btnType: 0
         }
     },
     components: {
@@ -77,6 +79,23 @@ export default {
             this.page = val
             this.initGetHome()
         },
+        resetTable() {
+            this.initGetHome()
+            this.show = !this.show
+        },
+        cancelForm() {
+            this.show = !this.show
+        },
+        addShow() {
+            this.row = {}
+            this.show = !this.show
+            this.btnType = 0
+        },
+        editData(val) {
+            this.row = val
+            this.show = !this.show
+            this.btnType = 1
+        }
     },
 }
 </script>

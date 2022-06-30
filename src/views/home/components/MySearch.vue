@@ -7,13 +7,13 @@
         </div>
         <div>
             <el-button type="primary" @click="batchDelete">批量删除</el-button>
-            <el-button type="primary" @click="dialogShow">添加</el-button>
+            <el-button type="primary" @click="addShow">添加</el-button>
         </div>
     </div>
 </template>
 
 <script type="text/javascript">
-import eventBus from '../../../utils/eventBus'
+import eventBus from "../../../utils/eventBus"
 export default {
     data() {
         return {
@@ -23,13 +23,13 @@ export default {
     components: {},
     methods: {
         searchFun() {
-            this.$emit('searchFunParent', this.search)
+            this.$emit("searchFunParent", this.search)
         },
         batchDelete() {
-            eventBus.$emit('batchDelete')
+            eventBus.$emit("batchDelete")
         },
-        dialogShow() {
-            eventBus.$emit('dialogShowA')
+        addShow() {
+            this.$emit('addShow')
         }
     },
 }
