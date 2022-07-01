@@ -13,7 +13,7 @@
             width="120"
         ></el-table-column>
         <!-- 去掉宽度能够自适应 -->
-        <el-table-column prop="address" label="籍贯"></el-table-column>
+        <el-table-column prop="address" label="籍贯" width="250"></el-table-column>
         <el-table-column label="投资时间" width="180">
             <!-- slot-scope作用域插槽，template空标签，scope就当成变量即可，scope.row就是当前行数据，数组遍历得到对象 -->
             <template slot-scope="scope"
@@ -66,7 +66,8 @@
 </template>
 
 <script type="text/javascript">
-import { deleteHomeApi, batchDeleteApi } from "../../../api/homeApi"
+// import { deleteHomeApi, batchDeleteApi } from "../../../api/homeApi"
+import { deleteHomeApi, batchDeleteApi } from "@a/homeApi"
 import eventBus from "../../../utils/eventBus"
 export default {
     props: ["arr"],

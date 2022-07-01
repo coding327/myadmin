@@ -21,7 +21,9 @@ export default {
             // 移除token
             removeToken('token')
             // 回到登录页，不登陆不让访问首页
-            this.$router.push('/login')
+            // this.$router.push('/login')
+            // 不要使用push，路由跳转是没有刷新页面的，而cookie和sessionStorage清楚了还是有缓存，刷新一下页面，使用go解决，或者reload
+            this.$router.go("/login")
         }
     },
 }

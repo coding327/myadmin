@@ -21,3 +21,5 @@ Mock.mock(/\/addHome/, 'post', homeData.addHomeData)
 Mock.mock(/\/editHome/, 'post', homeData.editHomeData)
 // 接口 登录
 Mock.mock(/\/login/, 'post', loginData.getLoginData)
+// 接口 获取用户信息
+Mock.mock(/\/getUser/, 'post', loginData.getUserInfo)

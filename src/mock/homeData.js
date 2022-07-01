@@ -2,7 +2,8 @@
 // 用来伪造home页面的数据
 
 import Mock from 'mockjs'
-import { param2Obj } from '@/utils/urlUtils'
+// import { param2Obj } from '../utils/urlUtils'
+import { param2Obj } from '@/utils/urlUtils' // 目录映射
 
 var List = [] // 用来存放数据
 // 模仿静态页面的表格里的数据格式写，注意每条数据一般都是有id的，这里我们补上即可

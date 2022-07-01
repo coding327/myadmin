@@ -1,8 +1,8 @@
 // 登录数据操作
 // 登录数据[提前写死两个，默认一个管理员]
 var LoginList = [
-    { username: 'admin', pwd: '123456', name: '小明', token: 'admin---token---' },
-    { username: 'aaa', pwd: '123456', name: '小红', token: 'aaa---token---' }
+    { username: 'admin', pwd: '123456', name: '小明', rule: '管理员', token: 'admin---token---' },
+    { username: 'aaa', pwd: '123456', name: '小红', rule: '普通用户', token: 'aaa---token---' }
 ]
 
 
@@ -32,6 +32,17 @@ export default {
         // 循环完return结果
         // console.log(result)
         return result
+    },
+    getUserInfo: config => {
+        const {token} = JSON.parse(config.body)
+        var obj = LoginList.find(item => {
+            return item.token == token
+        })
+        return {
+            code: 200,
+            msg: '获取用户信息成功',
+            data: obj
+        }
     }
 }
 
