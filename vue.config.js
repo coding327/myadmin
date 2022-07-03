@@ -3,7 +3,7 @@ module.exports = defineConfig({
   transpileDependencies: true
 })
 
-// 引入内置path模块
+// 引入内置path模块 【note: 修改配置文件一定要重启】
 const path = require('path')
 
 function resolve(dir) {

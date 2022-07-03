@@ -76,7 +76,7 @@ export default {
         //     } else if (value.length < 3 || value.length > 5) {
         //         callback(new Error("不满足条件，值是大于等于3小于等于5"))
         //     } else {
-        //         callback()
+        //         callback() // 这个是验证成功可以执行的回到函数
         //     }
         // }
         return {
@@ -128,6 +128,8 @@ export default {
                         message: "请输入收入",
                         trigger: "blur",
                     },
+                    // { type: "number", message: "收入必须为数字值" },
+                    // { validator: validateMyname, trigger: "blur" }, // 验证规则从上往下【validator的属性值可以换，var 属性值 = (rule, value, callback) => {判断代码块，最后一定要有一个else callback()调用代表验证成功，括号里面可以写成功执行的一些相关代码如提示等}】
                 ],
                 pay: [
                     {
