@@ -116,7 +116,7 @@ function getRouteFun(rule, routerAsync) {
 
 // 白名单【已经在白名单的直接放行】
 var whiteArr = ['/login', '/register']
-// 全局前置路由守卫 路由跳转之前触发    to新路由对象    from是旧路由对象
+// 全局前置路由守卫 路由跳转之前触发    to新路由对象【重定向也包含在内】    from是旧路由对象  【注意如果next()有参数改变to的去向，这时又将触发全局前置路由守卫，同时成为新的to,而from不变】
 router.beforeEach((to, from, next) => {
     var path = to.path // 新的路由对象
     var token = getToken('token')
@@ -125,6 +125,7 @@ router.beforeEach((to, from, next) => {
         if (path == '/login') { // 避免重复登录
             next('/')
         } else {
+            // 为什么不把保存用户信息和权限菜单放上面：上面只是避免重复登陆，让你next到根目录，而根目录重定向到首页必定执行下面这个，所以说制作权限菜单放下面
             // 从vuex里获取用户信息，如果已经有了用户信息，就不发送直接放行【通过vuex里的用户信息制作权限菜单】
             // step1: vuex里没有用户信息，发送请求，获取用户信息（主要是角色信息），保存到vuex
             if (store.state.routes.length == 0) { // 如果vuex已经保存了用户信息和路由数组，就不需要再发请求，渲染菜单页面直接拿vuex里面的路由数据渲染即可
@@ -136,15 +137,16 @@ router.beforeEach((to, from, next) => {
                         // 制作权限菜单【先制作二级路由数组，调用方法通过用户rule得到它的路由数组】
                         var userRouter = getRouteFun(rule, routerAsync)
                         // console.log(userRouter)
+                        // 这里我们是直接再赋值给原数组，routes是经过改变了的
                         routes[1].children = routes[1].children.concat(userRouter) // concat不影响原数组
                         // console.log(routes[1].children)
-                        store.commit('setRouter', routes) // 最终路由存储到vuex里面
+                        store.commit('setRouter', routes) // 权限菜单===【最终路由数组】存储到vuex里面
                         // 注意：新版本router.addRoutes已废弃：使用 router.addRoute() 代替。
                         // for (let x of newRoutes) {
                         //     router.addRoute(x)
                         // }
-                        router.addRoutes(routes) // 动态添加路由
-                        next({ ...to, replace: true }) // 解决动态添加路由的bug
+                        router.addRoutes(routes) // 动态添加路由【路由是会改变的，最初公共路由是默认路由，后添加的覆盖默认的路由】
+                        next({ ...to, replace: true }) // 解决动态添加路由的bug,正常情况下应该是next()放行
                     }
                 })
             } else {
