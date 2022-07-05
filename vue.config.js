@@ -19,14 +19,22 @@ module.exports = {
       .set('@a', resolve('src/api')) // @a取代src/api
       .set('@s', resolve('src/assets')) // @s取代src/assets
   },
-  // todo: 反向代理
+  // todo: 反向代理【可以配置多个】
   // devServer: {
-  //   '/api': {
-  //     target: 'http://localhost:80',
-  //     changeOrigin: true,
+  //   '/api': { // api别名
+  //     target: 'https://m.maoyan.com', // 代理的地址
+  //     changeOrigin: true, // 允许跨域
   //     pathRewrite: {
-  //       '^/api': ""
+  //       '^/api': "" // 重定向[以/api开头的请求]
+  //     }
+  //   },
+  //   '/bpi': { // api别名
+  //     target: 'https://movie.douban.com', // 代理的地址
+  //     changeOrigin: true, // 允许跨域
+  //     pathRewrite: {
+  //       '^/bpi': "" // 重定向[以/bpi开头的请求]
   //     }
   //   }
   // }
+  // 配置之后，会将所有以`/api`开头的请求全部代理到https://m.maoyan.com这个服务器上
 }
