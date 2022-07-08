@@ -37,4 +37,5 @@ module.exports = {
   //   }
   // }
   // 配置之后，会将所有以`/api`开头的请求全部代理到https://m.maoyan.com这个服务器上
+  // 配置之后，会将所有以`/bpi`开头的请求全部代理到https://movie.douban.com这个服务器上
 }
