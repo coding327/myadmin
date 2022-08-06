@@ -15,7 +15,7 @@ export function deleteHomeApi(data) {
     return request({
         url: '/deleteById',
         method: 'post', // post方式配置项传参属性是data
-        data
+        data // 对象属性名和变量名相同简写
     })
 }
 
